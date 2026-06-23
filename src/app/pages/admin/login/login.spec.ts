@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AdminLogin } from './login'; // Se cambió 'Login' por 'AdminLogin'
 
-describe('AdminLogin', () => {
+import { AdminLogin } from './login';
+
+describe('Login', () => {
   let component: AdminLogin;
   let fixture: ComponentFixture<AdminLogin>;
 

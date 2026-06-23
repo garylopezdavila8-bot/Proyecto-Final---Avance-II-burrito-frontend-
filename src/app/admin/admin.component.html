@@ -53,7 +53,7 @@
     <tbody>
       <tr *ngFor="let libro of libros()" style="border-bottom: 1px solid #e5e7eb;">
         <td style="padding: 12px;">
-          <img [src]="'https://vercel.com/ezlas-projects/proyecto-final-avance-ii-burrito-frontend/xBC3nEFrCpi9D6PoRgJRJPeMBw86' + libro.imagenUrl" style="width: 45px; height: 60px; object-fit: cover; border-radius: 4px; background: #eee;">
+          <img [src]=" + libro.imagenUrl" style="width: 45px; height: 60px; object-fit: cover; border-radius: 4px; background: #eee;">
         </td>
         <td style="padding: 12px; font-weight: bold;">{{ libro.titulo }}</td>
         <td style="padding: 12px;">{{ libro.autor }}</td>
