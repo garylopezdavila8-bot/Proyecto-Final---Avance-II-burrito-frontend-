@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 mb-4">
+  <a class="navbar-brand d-flex align-items-center" routerLink="/burritolector/galeria">
+    <i class="bi bi-book-half me-2 text-primary"></i> <strong>El Burrito Lector</strong>
+  </a>
+  <div class="ms-auto d-flex gap-3">
+    <a class="nav-link text-muted" routerLink="/burritolector/galeria">Galería</a>
+    <a class="nav-link text-muted" routerLink="/burritolector/dashboard">Mi Dashboard</a>
+    <a class="nav-link text-white fw-bold" routerLink="/burritolector/afinidad">Afinidad</a>
+    <button class="btn btn-sm btn-outline-danger" type="button" (click)="salir()">Salir</button>
+  </div>
+</nav>
+
+<div class="container text-white pb-5">
+  <div class="mb-4">
+    <h2>Análisis de Afinidad</h2>
+    <p class="text-muted">
+      Descubre qué lectores comparten gustos similares contigo según tus puntuaciones (≥ 70%).
+    </p>
+  </div>
+
+  <div *ngIf="loading()" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="errorMessage()" class="alert alert-danger">{{ errorMessage() }}</div>
+
+  <div class="card bg-secondary text-white p-4 shadow" *ngIf="!loading()">
+    <h4 class="text-warning mb-3"><i class="bi bi-person-heart"></i> Lectores Compatibles</h4>
+    <table class="table table-dark table-hover mb-0" *ngIf="afinidades().length > 0; else sinAfinidades">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Libros en Común</th>
+          <th>Porcentaje de Afinidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let afin of afinidades()">
+          <td>{{ afin.nombre }}</td>
+          <td>{{ afin.librosEnComun.join(', ') }}</td>
+          <td>
+            <span class="badge" [ngClass]="afin.porcentajeAfinidad >= 80 ? 'bg-success' : 'bg-warning text-dark'">
+              {{ afin.porcentajeAfinidad }}%
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #sinAfinidades>
+      <p class="text-muted mb-0">
+        No se encontraron usuarios altamente afines. Califica al menos dos libros en común con otros lectores.
+      </p>
+    </ng-template>
+  </div>
+</div>

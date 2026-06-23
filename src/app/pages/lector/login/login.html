@@ -1,0 +1,70 @@
+<div class="auth-body">
+  <button class="icon-button theme-toggle auth-theme-toggle" type="button" aria-label="Cambiar tema visual" title="Cambiar tema visual">
+    <i class="bi bi-moon-stars" aria-hidden="true"></i>
+  </button>
+  
+  <main class="auth-page">
+    <section class="auth-card">
+      
+      <a class="auth-brand" href="/burritolector/login">
+        <span class="brand-icon"><i class="bi bi-book-half" aria-hidden="true"></i></span>
+        <span><strong>El Burrito Lector</strong><small>Tu biblioteca virtual gratuita</small></span>
+      </a>
+      
+      <div class="auth-visual">
+        <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?q=80&w=1000&auto=format&fit=crop" alt="El Burrito Lector Ilustración">
+      </div>
+      
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="mb-4">
+          <p class="eyebrow mb-1">Acceso de Lectores</p>
+          <h1 class="h3 mb-1">Iniciar Sesión</h1>
+          <p class="text-muted mb-0">Ingresa para leer y descargar tus libros favoritos.</p>
+        </div>
+
+        <div *ngIf="errorMessage()" class="alert alert-danger p-2 small mb-3" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ errorMessage() }}
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label" for="loginEmail">Correo Electrónico</label>
+          <input 
+            class="form-control" 
+            id="loginEmail" 
+            type="email" 
+            formControlName="email"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          >
+          <div class="invalid-feedback" *ngIf="f['email'].errors?.['required']">El correo electrónico es obligatorio.</div>
+          <div class="invalid-feedback" *ngIf="f['email'].errors?.['email']">Ingresa un formato de correo válido (ejemplo: usuario&#64;dominio.com).</div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="d-flex justify-content-between">
+            <label class="form-label" for="loginPassword">Contraseña</label>
+          </div>
+          <input 
+            class="form-control" 
+            id="loginPassword" 
+            type="password" 
+            formControlName="password"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          >
+          <div class="invalid-feedback" *ngIf="f['password'].errors?.['required']">La contraseña es obligatoria.</div>
+          <div class="invalid-feedback" *ngIf="f['password'].errors?.['minlength']">La contraseña debe contener un mínimo de 6 caracteres.</div>
+        </div>
+        
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="checkbox" id="rememberMe" formControlName="rememberMe">
+          <label class="form-check-label" for="rememberMe">Recordarme</label>
+        </div>
+        
+        <button class="btn btn-primary w-100" type="submit">
+          <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Ingresar
+        </button>
+      </form>
+      
+      <div class="auth-footer">¿No tienes cuenta? <a href="/burritolector/registro">Regístrate aquí</a></div>
+    </section>
+  </main>
+</div>

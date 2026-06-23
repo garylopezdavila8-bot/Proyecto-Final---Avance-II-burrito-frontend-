@@ -1,0 +1,114 @@
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <a class="brand-mark" routerLink="/burritoadministrador/dash">
+        <span class="brand-icon"><i class="bi bi-book-half"></i></span>
+        <span class="brand-copy">
+          <strong>El Burrito Lector</strong>
+          <small>Panel administrativo</small>
+        </span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-link" routerLink="/burritoadministrador/dash">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+      <a class="sidebar-link active" routerLink="/burritoadministrador/libros">
+        <i class="bi bi-journal-bookmark"></i> Libros
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn btn-outline-light w-100" type="button" (click)="salir()">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div>
+        <p class="eyebrow mb-1">Gestión del catálogo</p>
+        <h1 class="h3 mb-0">Libros</h1>
+      </div>
+    </header>
+
+    <section class="admin-content">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <div class="metric-card">
+            <h2 class="h5 mb-3">{{ editingId() ? 'Editar libro' : 'Nuevo libro' }}</h2>
+            <form [formGroup]="libroForm" (ngSubmit)="guardar()">
+              <div class="mb-3">
+                <label class="form-label">Título</label>
+                <input class="form-control" formControlName="titulo" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Autor</label>
+                <input class="form-control" formControlName="autor" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Editorial</label>
+                <input class="form-control" formControlName="editorial" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Género</label>
+                <input class="form-control" formControlName="genero" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Sinopsis</label>
+                <textarea class="form-control" rows="4" formControlName="sinopsis"></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Imagen</label>
+                <input class="form-control" type="file" accept="image/*" (change)="onFileSelected($event)" />
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary" type="submit" [disabled]="saving()">
+                  {{ saving() ? 'Guardando...' : 'Guardar' }}
+                </button>
+                <button class="btn btn-outline-secondary" type="button" *ngIf="editingId()" (click)="cancelarEdicion()">
+                  Cancelar
+                </button>
+              </div>
+            </form>
+            <div class="alert alert-success mt-3" *ngIf="message()">{{ message() }}</div>
+            <div class="alert alert-danger mt-3" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="metric-card">
+            <h2 class="h5 mb-3">Catálogo actual</h2>
+            <div *ngIf="loading()" class="text-center py-4">
+              <div class="spinner-border text-primary" role="status"></div>
+            </div>
+            <div class="table-responsive" *ngIf="!loading()">
+              <table class="table align-middle">
+                <thead>
+                  <tr>
+                    <th>Libro</th>
+                    <th>Autor</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let libro of libros()">
+                    <td>
+                      <div class="d-flex align-items-center gap-3">
+                        <img [src]="getImageUrl(libro.imagenUrl)" alt="" width="48" height="48" class="rounded object-fit-cover" />
+                        <span>{{ libro.titulo }}</span>
+                      </div>
+                    </td>
+                    <td>{{ libro.autor }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-primary me-2" type="button" (click)="editar(libro)">Editar</button>
+                      <button class="btn btn-sm btn-outline-danger" type="button" (click)="eliminar(libro.id)">Eliminar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

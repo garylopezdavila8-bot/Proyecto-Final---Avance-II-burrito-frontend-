@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 mb-4">
+  <a class="navbar-brand d-flex align-items-center" routerLink="/burritolector/galeria">
+    <i class="bi bi-book-half me-2 text-primary"></i> <strong>El Burrito Lector</strong>
+  </a>
+  <div class="ms-auto d-flex gap-3">
+    <a class="nav-link text-muted" routerLink="/burritolector/galeria">Galería</a>
+    <a class="nav-link text-white fw-bold" routerLink="/burritolector/dashboard">Mi Dashboard</a>
+    <a class="nav-link text-muted" routerLink="/burritolector/afinidad">Afinidad</a>
+    <button class="btn btn-sm btn-outline-danger" type="button" (click)="salir()">Salir</button>
+  </div>
+</nav>
+
+<div class="container text-white pb-5">
+  <div class="mb-4">
+    <h2>Dashboard del Lector</h2>
+    <p class="text-muted" *ngIf="currentUser() as user">
+      Bienvenido, {{ user.nombre }}. Aquí puedes revisar tus reseñas y lectores compatibles.
+    </p>
+  </div>
+
+  <div *ngIf="loading()" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="errorMessage()" class="alert alert-danger">{{ errorMessage() }}</div>
+
+  <div class="row g-4" *ngIf="!loading()">
+    <div class="col-lg-7">
+      <div class="card bg-secondary text-white shadow">
+        <div class="card-body">
+          <h4 class="text-warning mb-3"><i class="bi bi-star"></i> Mis reseñas</h4>
+          <div *ngIf="misResenas().length > 0; else sinResenas">
+            <div class="border-bottom border-dark py-3" *ngFor="let resena of misResenas()">
+              <div class="d-flex justify-content-between">
+                <strong>{{ resena.libro?.titulo ?? 'Libro' }}</strong>
+                <span class="badge bg-warning text-dark">{{ resena.calificacion }}/5</span>
+              </div>
+              <p class="mb-0 mt-2 text-light" *ngIf="resena.comentario">{{ resena.comentario }}</p>
+            </div>
+          </div>
+          <ng-template #sinResenas>
+            <p class="text-muted mb-0">Aún no has calificado ningún libro.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card bg-secondary text-white shadow">
+        <div class="card-body">
+          <h4 class="text-warning mb-3"><i class="bi bi-person-heart"></i> Usuarios afines</h4>
+          <div *ngIf="usuariosAfines().length > 0; else sinAfinidades">
+            <div class="border-bottom border-dark py-3" *ngFor="let afin of usuariosAfines()">
+              <div class="d-flex justify-content-between">
+                <strong>{{ afin.nombre }}</strong>
+                <span class="badge bg-success">{{ afin.porcentajeAfinidad }}%</span>
+              </div>
+              <small class="text-muted">{{ afin.librosEnComun.join(', ') }}</small>
+            </div>
+          </div>
+          <ng-template #sinAfinidades>
+            <p class="text-muted mb-0">Califica más libros para descubrir lectores compatibles.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="auth-body">
+  <main class="auth-page">
+    <section class="auth-card">
+      <a class="auth-brand" href="/burritoadministrador/login">
+        <span class="brand-icon"><i class="bi bi-shield-lock" aria-hidden="true"></i></span>
+        <span><strong>Burrito Administrador</strong><small>Panel de gestión del catálogo</small></span>
+      </a>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="mb-4">
+          <p class="eyebrow mb-1">Acceso Administrativo</p>
+          <h1 class="h3 mb-1">Iniciar Sesión</h1>
+          <p class="text-muted mb-0">Ingresa con una cuenta con rol administrador.</p>
+        </div>
+
+        <div *ngIf="errorMessage()" class="alert alert-danger p-2 small mb-3">
+          {{ errorMessage() }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="adminEmail">Correo Electrónico</label>
+          <input
+            class="form-control"
+            id="adminEmail"
+            type="email"
+            formControlName="email"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label" for="adminPassword">Contraseña</label>
+          <input
+            class="form-control"
+            id="adminPassword"
+            type="password"
+            formControlName="password"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+        </div>
+
+        <button class="btn btn-primary w-100" type="submit" [disabled]="loading()">
+          {{ loading() ? 'Ingresando...' : 'Ingresar al panel' }}
+        </button>
+      </form>
+    </section>
+  </main>
+</div>

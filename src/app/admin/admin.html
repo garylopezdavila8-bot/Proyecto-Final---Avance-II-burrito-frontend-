@@ -1,0 +1,68 @@
+<div class="container p-6 style-admin" style="max-width: 1200px; margin: 0 auto; font-family: sans-serif;">
+  
+  <h2 class="text-2xl font-bold mb-4" style="color: #333;">Panel de Control Burrito Administrador</h2>
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px;">
+    <div style="background: #e0f2fe; padding: 20px; border-radius: 8px; text-align: center; border-left: 5px solid #0284c7;">
+      <h3 style="margin: 0; color: #0369a1;">Total Lectores</h3>
+      <p style="font-size: 2rem; font-weight: bold; margin: 10px 0 0 0;">{{ stats().lectores }}</p>
+    </div>
+    <div style="background: #fef3c7; padding: 20px; border-radius: 8px; text-align: center; border-left: 5px solid #d97706;">
+      <h3 style="margin: 0; color: #b45309;">Total Libros</h3>
+      <p style="font-size: 2rem; font-weight: bold; margin: 10px 0 0 0;">{{ stats().libros }}</p>
+    </div>
+    <div style="background: #dcfce7; padding: 20px; border-radius: 8px; text-align: center; border-left: 5px solid #16a34a;">
+      <h3 style="margin: 0; color: #15803d;">Rating Promedio</h3>
+      <p style="font-size: 2rem; font-weight: bold; margin: 10px 0 0 0;">⭐ {{ stats().promedio }}</p>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h3 style="font-size: 1.5rem; margin: 0;">Catálogo de Libros</h3>
+    <button (click)="mostrarFormulario = !mostrarFormulario" style="background: #4f46e5; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">
+      {{ mostrarFormulario ? 'Cerrar Formulario' : 'Agregar Nuevo Libro' }}
+    </button>
+  </div>
+
+  <div *ngIf="mostrarFormulario" style="background: #f9fafb; padding: 25px; border-radius: 8px; margin: 20px 0; border: 1px solid #e5e7eb;">
+    <h4 style="margin-top: 0;">{{ editandoId ? 'Modificar Libro' : 'Registrar Nuevo Libro' }}</h4>
+    <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+      <input type="text" formControlName="titulo" placeholder="Título" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+      <input type="text" formControlName="autor" placeholder="Autor" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+      <input type="text" formControlName="editorial" placeholder="Editorial" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+      <input type="text" formControlName="genero" placeholder="Género" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+      <textarea formControlName="sinopsis" placeholder="Sinopsis..." style="grid-column: span 2; padding: 10px; border: 1px solid #ccc; border-radius: 4px; height: 80px;"></textarea>
+      <input type="file" (change)="onFileSelected($event)" style="grid-column: span 2;">
+      
+      <div style="grid-column: span 2; display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" (click)="limpiarFormulario()" style="background: #9ca3af; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">Cancelar</button>
+        <button type="submit" [disabled]="libroForm.invalid" style="background: #10b981; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">Guardar Libro</button>
+      </div>
+    </form>
+  </div>
+
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left;">
+    <thead>
+      <tr style="background: #f3f4f6; border-bottom: 2px solid #e5e7eb;">
+        <th style="padding: 12px;">Portada</th>
+        <th style="padding: 12px;">Título</th>
+        <th style="padding: 12px;">Autor</th>
+        <th style="padding: 12px;">Género</th>
+        <th style="padding: 12px; text-align: center;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let libro of libros()" style="border-bottom: 1px solid #e5e7eb;">
+        <td style="padding: 12px;">
+          <img [src]="'http://localhost:3000' + libro.imagenUrl" style="width: 45px; height: 60px; object-fit: cover; border-radius: 4px; background: #eee;">
+        </td>
+        <td style="padding: 12px; font-weight: bold;">{{ libro.titulo }}</td>
+        <td style="padding: 12px;">{{ libro.autor }}</td>
+        <td style="padding: 12px;">{{ libro.genero }}</td>
+        <td style="padding: 12px; text-align: center;">
+          <button (click)="editarLibro(libro)" style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Editar</button>
+          <button (click)="eliminarLibro(libro.id)" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

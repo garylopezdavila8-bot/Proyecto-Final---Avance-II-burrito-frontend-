@@ -1,0 +1,63 @@
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <a class="brand-mark" routerLink="/burritoadministrador/dash">
+        <span class="brand-icon"><i class="bi bi-book-half"></i></span>
+        <span class="brand-copy">
+          <strong>El Burrito Lector</strong>
+          <small>Panel administrativo</small>
+        </span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-link active" routerLink="/burritoadministrador/dash">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+      <a class="sidebar-link" routerLink="/burritoadministrador/libros">
+        <i class="bi bi-journal-bookmark"></i> Libros
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn btn-outline-light w-100" type="button" (click)="salir()">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div>
+        <p class="eyebrow mb-1">Resumen general</p>
+        <h1 class="h3 mb-0">Dashboard Administrador</h1>
+      </div>
+      <span class="text-muted" *ngIf="currentUser() as user">{{ user.nombre }}</span>
+    </header>
+
+    <section class="admin-content">
+      <div *ngIf="loading()" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+
+      <div *ngIf="errorMessage()" class="alert alert-danger">{{ errorMessage() }}</div>
+
+      <div class="row g-4" *ngIf="!loading() && stats() as data">
+        <div class="col-md-4">
+          <div class="metric-card">
+            <span class="metric-label">Total lectores</span>
+            <strong class="metric-value">{{ data.totalLectores }}</strong>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric-card">
+            <span class="metric-label">Total libros</span>
+            <strong class="metric-value">{{ data.totalLibros }}</strong>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric-card">
+            <span class="metric-label">Promedio de rating</span>
+            <strong class="metric-value">{{ data.promedioRating }}</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
