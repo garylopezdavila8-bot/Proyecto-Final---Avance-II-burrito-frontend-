@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://burrito-api.onrender.com',
+  apiUrl: 'https://proyecto-final-avance-ii-completo-2.onrender.com',
 };
